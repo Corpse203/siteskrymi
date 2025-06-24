@@ -69,7 +69,8 @@ def get_current_user(admin: Optional[str] = Cookie(None)):
 
 def convert_objectid_to_str(doc):
     if doc and "_id" in doc:
-        doc["id"] = str(doc["_id"])
+        if "id" not in doc:  # Seulement si pas d'id personnalisé
+            doc["id"] = str(doc["_id"])
         del doc["_id"]
     return doc
 
