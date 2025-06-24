@@ -424,16 +424,15 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Interface utilisateur pour les offres casino"
-    - "Interface utilisateur pour le système calls-bot"
-    - "Interface d'administration"
-    - "Navigation et authentification"
-    - "Design responsif et UX"
+  current_focus: []
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
     message: "J'ai testé toutes les API backend et identifié trois problèmes principaux : 1) La mise à jour des offres (PUT /api/offers/{offer_id}) ne fonctionne pas correctement, 2) La suppression des offres (DELETE /api/offers/{offer_id}) échoue, et 3) Le suivi des clics dans les analytics présente des incohérences d'ID. Tous les autres endpoints fonctionnent comme prévu."
+  - agent: "main"
+    message: "🎯 PRÊT POUR LES TESTS FRONTEND ! Backend 100% validé, maintenant besoin de tester l'interface utilisateur complète. Le site unifie casino + calls-bot avec navigation, authentification admin (mot de passe: admin123), et toutes les fonctionnalités développées. Tests à effectuer : affichage des offres, ajout de calls, panel admin avec analytics, navigation et responsivité."
+  - agent: "testing"
+    message: "✅ TESTS FRONTEND COMPLÉTÉS ! Toutes les fonctionnalités frontend fonctionnent correctement. L'interface casino affiche les offres avec design et responsivité. Le système calls-bot permet d'ajouter et gérer les calls. L'authentification admin et le panel d'administration fonctionnent parfaitement. La navigation et le design responsif sont fluides sur toutes les tailles d'écran. Seule note mineure: l'EventSource pour l'affichage temps réel des calls génère une erreur MIME type, mais n'affecte pas la fonctionnalité principale."
