@@ -101,3 +101,233 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Je viens de créer un site unifié qui combine un système de promotion d'offres casino avec un système calls-bot intégré. Voici les principales fonctionnalités backend à tester."
+
+backend:
+  - task: "GET /api/offers - Récupérer toutes les offres"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API retourne correctement les 7 offres par défaut. Toutes les données sont bien structurées et complètes."
+
+  - task: "POST /api/offers - Créer une nouvelle offre (admin seulement)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API fonctionne correctement. Les utilisateurs non authentifiés reçoivent une erreur 403, tandis que les administrateurs peuvent créer de nouvelles offres avec succès."
+
+  - task: "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API échoue lors de la mise à jour d'une offre. Le problème semble être lié à la façon dont les données sont mises à jour dans MongoDB. L'API retourne une erreur lors de la tentative de mise à jour."
+
+  - task: "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API échoue lors de la suppression d'une offre. Le problème semble être lié à la façon dont les offres sont identifiées dans MongoDB. L'API retourne une erreur lors de la tentative de suppression."
+
+  - task: "GET /api/calls - Récupérer la liste des calls"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API retourne correctement la liste des calls. Le format de réponse est conforme aux attentes."
+
+  - task: "POST /api/calls - Ajouter un nouveau call (public)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API permet d'ajouter un nouveau call sans authentification. Les données sont correctement enregistrées dans la base de données."
+
+  - task: "DELETE /api/calls/{call_index} - Supprimer un call par index (admin seulement)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API permet aux administrateurs de supprimer un call par index. La protection d'authentification fonctionne correctement."
+
+  - task: "POST /api/calls/reset - Vider toute la liste des calls (admin seulement)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API permet aux administrateurs de réinitialiser tous les calls. La protection d'authentification fonctionne correctement."
+
+  - task: "POST /api/calls/reorder - Réorganiser les calls (admin seulement)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API permet aux administrateurs de réorganiser les calls. La fonctionnalité de drag & drop backend fonctionne correctement."
+
+  - task: "POST /api/click - Enregistrer un clic sur une offre"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API enregistre correctement les clics sur les offres. Les données sont bien stockées dans la base de données."
+
+  - task: "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API retourne les statistiques, mais il y a un problème avec le suivi des clics. Les clics enregistrés via l'API /api/click ne sont pas correctement comptabilisés dans les statistiques. Les IDs des offres dans les statistiques ne correspondent pas aux IDs utilisés lors de l'enregistrement des clics."
+
+  - task: "POST /api/login - Connexion admin"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API d'authentification fonctionne correctement. Le mot de passe admin123 est accepté et le cookie d'authentification est correctement défini."
+
+  - task: "POST /api/logout - Déconnexion admin"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API de déconnexion fonctionne correctement. Le cookie d'authentification est correctement supprimé."
+
+  - task: "GET /api/logs - Récupérer les logs (admin seulement)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "L'API retourne correctement les logs. La protection d'authentification fonctionne correctement."
+
+frontend:
+  - task: "Interface utilisateur pour les offres casino"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Non testé - test backend uniquement"
+
+  - task: "Interface utilisateur pour le système calls-bot"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Non testé - test backend uniquement"
+
+  - task: "Interface d'administration"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Non testé - test backend uniquement"
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+  stuck_tasks:
+    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "J'ai testé toutes les API backend et identifié trois problèmes principaux : 1) La mise à jour des offres (PUT /api/offers/{offer_id}) ne fonctionne pas correctement, 2) La suppression des offres (DELETE /api/offers/{offer_id}) échoue, et 3) Le suivi des clics dans les analytics présente des incohérences d'ID. Tous les autres endpoints fonctionnent comme prévu."
