@@ -291,6 +291,11 @@ async def reorder_calls(new_order: List[dict], is_admin: bool = Depends(get_curr
 # Routes Tracking
 @app.post("/api/click")
 async def track_click(click_data: ClickData, request: Request):
+    # Vérifier que l'offre existe
+    offer = offers_collection.find_one({"id": click_data.offer_id})
+    if not offer:
+        raise HTTPException(status_code=404, detail="Offer not found")
+    
     # Incrémenter le compteur de clics
     offers_collection.update_one(
         {"id": click_data.offer_id},
