@@ -426,5 +426,79 @@ def run_all_tests():
     
     return test_results
 
+def run_specific_tests():
+    """Run only the specific tests that need retesting"""
+    print("=" * 50)
+    print("STARTING SPECIFIC BACKEND API TESTS")
+    print("=" * 50)
+    
+    # 1. Test PUT /api/offers/{offer_id}
+    admin_session = get_admin_session()
+    if admin_session:
+        # Create a new offer to test update
+        new_offer_id = test_create_offer(admin_session)
+        if new_offer_id:
+            # Test updating the offer
+            test_update_offer(admin_session, new_offer_id)
+            
+            # Don't delete it yet, we'll use it for analytics testing
+            
+            # 2. Test DELETE /api/offers/{offer_id}
+            # Create another offer to test deletion
+            another_offer_id = test_create_offer(admin_session)
+            if another_offer_id:
+                test_delete_offer(admin_session, another_offer_id)
+            
+            # 3. Test analytics with click tracking
+            # Register multiple clicks on the first offer
+            print("\nRegistering multiple clicks for analytics testing...")
+            for i in range(5):
+                click_data = {
+                    "offer_id": new_offer_id,
+                    "user_ip": "192.168.1.1"  # This will be overridden by the server
+                }
+                try:
+                    response = requests.post(f"{BASE_URL}/click", json=click_data)
+                    print(f"Click {i+1}: Status {response.status_code}")
+                except Exception as e:
+                    print(f"Click {i+1} failed: {str(e)}")
+                time.sleep(0.5)  # Small delay between clicks
+            
+            # Now test analytics to verify clicks are counted
+            try:
+                response = admin_session.get(f"{BASE_URL}/analytics")
+                success = (response.status_code == 200 and 
+                          "offers_stats" in response.json() and 
+                          "total_clicks" in response.json())
+                
+                if success:
+                    analytics_data = response.json()
+                    offer_stats = next((o for o in analytics_data.get("offers_stats", []) if o.get("id") == new_offer_id), None)
+                    
+                    if offer_stats:
+                        clicks_count = offer_stats.get("clicks", 0)
+                        log_test(f"Analytics test: Offer {new_offer_id} has {clicks_count} clicks", 
+                                clicks_count >= 5, response)
+                        print(f"Offer title: {offer_stats.get('title')}")
+                        print(f"Clicks registered: {clicks_count}")
+                    else:
+                        log_test(f"Analytics test: Offer {new_offer_id} found in analytics", 
+                                False, error="Offer not found in analytics data")
+                else:
+                    log_test("GET /api/analytics - Authentication check", success, response)
+            except Exception as e:
+                log_test("GET /api/analytics test", False, error=str(e))
+            
+            # Finally, clean up by deleting the test offer
+            test_delete_offer(admin_session, new_offer_id)
+    
+    # Print summary
+    print("\n" + "=" * 50)
+    print(f"TEST SUMMARY: {test_results['passed']} passed, {test_results['failed']} failed")
+    print("=" * 50)
+    
+    return test_results
+
 if __name__ == "__main__":
-    run_all_tests()
+    # Run only the specific tests that need retesting
+    run_specific_tests()
