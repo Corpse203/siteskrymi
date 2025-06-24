@@ -169,8 +169,8 @@ test_plan:
   test_priority: "stuck_first"
 
 agent_communication:
-  - agent: "testing"
-    message: "✅ TOUTES LES CORRECTIONS VALIDÉES ! Les 3 problèmes critiques ont été résolus avec succès : 1) PUT /api/offers fonctionne parfaitement, 2) DELETE /api/offers fonctionne parfaitement, 3) GET /api/analytics avec tracking des clics fonctionne parfaitement. Le backend est maintenant 100% opérationnel avec 14/14 endpoints fonctionnels."
+  - agent: "main"
+    message: "🎯 PRÊT POUR LES TESTS FRONTEND ! Backend 100% validé, maintenant besoin de tester l'interface utilisateur complète. Le site unifie casino + calls-bot avec navigation, authentification admin (mot de passe: admin123), et toutes les fonctionnalités développées. Tests à effectuer : affichage des offres, ajout de calls, panel admin avec analytics, navigation et responsivité."
 
 backend:
   - task: "GET /api/offers - Récupérer toutes les offres"
