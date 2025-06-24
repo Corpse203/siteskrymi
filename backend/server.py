@@ -320,14 +320,15 @@ async def get_analytics(is_admin: bool = Depends(get_current_user)):
     
     # Statistiques des offres
     offers = list(offers_collection.find())
-    offers_stats = [
-        {
-            "title": offer["title"],
-            "clicks": offer.get("clicks", 0),
-            "id": offer["id"]
-        }
-        for offer in offers
-    ]
+    offers_stats = []
+    
+    for offer in offers:
+        offer_data = convert_objectid_to_str(offer)
+        offers_stats.append({
+            "title": offer_data["title"],
+            "clicks": offer_data.get("clicks", 0),
+            "id": offer_data["id"]
+        })
     
     # Statistiques globales
     total_clicks = sum(offer.get("clicks", 0) for offer in offers)
