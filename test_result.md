@@ -348,11 +348,11 @@ frontend:
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
-        agent: "testing"
-        comment: "Non testé - test backend uniquement"
+        agent: "main"
+        comment: "Interface développée avec navigation, affichage des 7 offres par défaut, cards avec gradients, boutons d'action. Besoin de tester l'affichage, le tracking des clics et la responsivité."
 
   - task: "Interface utilisateur pour le système calls-bot"
     implemented: true
@@ -360,11 +360,11 @@ frontend:
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
-        agent: "testing"
-        comment: "Non testé - test backend uniquement"
+        agent: "main"
+        comment: "Interface calls-bot intégrée avec formulaire d'ajout de calls, affichage de la liste, fonctionnalités admin de suppression. Besoin de tester l'ajout de calls, l'affichage temps réel et les actions admin."
 
   - task: "Interface d'administration"
     implemented: true
@@ -372,11 +372,35 @@ frontend:
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
-        agent: "testing"
-        comment: "Non testé - test backend uniquement"
+        agent: "main"
+        comment: "Panel d'administration développé avec login, analytics, CRUD des offres, gestion des calls. Besoin de tester la connexion admin, l'affichage des analytics et les fonctionnalités CRUD."
+
+  - task: "Navigation et authentification"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Système de navigation entre Casino/Calls/Admin avec authentification unifiée. Besoin de tester la navigation, le login/logout admin et la persistance de session."
+
+  - task: "Design responsif et UX"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Design moderne avec Tailwind, gradients, animations, responsivité mobile. Besoin de tester sur différentes tailles d'écran et vérifier l'UX globale."
 
 metadata:
   created_by: "testing_agent"
