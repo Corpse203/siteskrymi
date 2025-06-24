@@ -410,14 +410,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
-    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
-    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
-  stuck_tasks:
-    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
-    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
-    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
-  test_all: false
+    - "Interface utilisateur pour les offres casino"
+    - "Interface utilisateur pour le système calls-bot"
+    - "Interface d'administration"
+    - "Navigation et authentification"
+    - "Design responsif et UX"
+  stuck_tasks: []
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
