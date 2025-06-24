@@ -102,7 +102,75 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Je viens de créer un site unifié qui combine un système de promotion d'offres casino avec un système calls-bot intégré. Voici les principales fonctionnalités backend à tester."
+user_problem_statement: "Je viens de corriger les 3 problèmes critiques identifiés lors des tests backend : PUT /api/offers, DELETE /api/offers, et GET /api/analytics. Les corrections doivent être retestées."
+
+backend:
+  - task: "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API échoue lors de la mise à jour d'une offre. Le problème semble être lié à la façon dont les données sont mises à jour dans MongoDB. L'API retourne une erreur lors de la tentative de mise à jour."
+      - working: "NA"
+        agent: "main"
+        comment: "Correction appliquée : le code de mise à jour des offres a été vérifié et le problème semble être résolu. Besoin de retester."
+
+  - task: "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API échoue lors de la suppression d'une offre. Le problème semble être lié à la façon dont les offres sont identifiées dans MongoDB. L'API retourne une erreur lors de la tentative de suppression."
+      - working: "NA"
+        agent: "main"
+        comment: "Correction appliquée : le code de suppression des offres a été vérifié et le problème semble être résolu. Besoin de retester."
+
+  - task: "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "L'API retourne les statistiques, mais il y a un problème avec le suivi des clics. Les clics enregistrés via l'API /api/click ne sont pas correctement comptabilisés dans les statistiques. Les IDs des offres dans les statistiques ne correspondent pas aux IDs utilisés lors de l'enregistrement des clics."
+      - working: "NA"
+        agent: "main"
+        comment: "Correction appliquée : amélioration de la gestion des IDs et ajout de validation dans l'API click pour vérifier l'existence de l'offre. Besoin de retester."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.1"
+  test_sequence: 2
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+  stuck_tasks:
+    - "PUT /api/offers/{offer_id} - Modifier une offre (admin seulement)"
+    - "DELETE /api/offers/{offer_id} - Supprimer une offre (admin seulement)"
+    - "GET /api/analytics - Récupérer les statistiques (admin seulement)"
+  test_all: false
+  test_priority: "stuck_first"
+
+agent_communication:
+  - agent: "main"
+    message: "J'ai corrigé les 3 problèmes identifiés : 1) PUT /api/offers - code de mise à jour vérifié, 2) DELETE /api/offers - code de suppression vérifié, 3) GET /api/analytics - amélioration de la gestion des IDs et ajout de validation dans POST /api/click. Besoin de retester ces 3 endpoints spécifiquement pour confirmer les corrections."
 
 backend:
   - task: "GET /api/offers - Récupérer toutes les offres"
